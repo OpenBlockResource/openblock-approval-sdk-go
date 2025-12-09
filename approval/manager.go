@@ -1,0 +1,59 @@
+package approval
+
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+type SignResult struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    string `json:"data"`
+}
+
+func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
+	result, err := AutoAprove(client, approvalParams)
+	if err != nil {
+		return err
+	}
+	for _, res := range result {
+		if !res.Approved {
+			continue
+		}
+
+		url := fmt.Sprintf("http://localhost:7790/openapi/sign/send_transaction?key=%s", client.ApiKey)
+		data := fmt.Sprintf(`{"company_wallet_approve_record_id": "%s"}`, res.ApprovalId)
+		resp, err := http.Post(url, "application/json", bytes.NewBufferString(data))
+		if err != nil {
+			return fmt.Errorf("failed to send sign request: %w", err)
+		}
+		defer resp.Body.Close()
+
+		// Read response
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return fmt.Errorf("failed to read response body: %w", err)
+		}
+
+		// Check HTTP status code
+		if resp.StatusCode != http.StatusOK {
+			return fmt.Errorf("sign request failed with status code: %d, body: %s", resp.StatusCode, string(body))
+		}
+
+		var signRes SignResult
+		err = json.Unmarshal(body, &signRes)
+		if err != nil {
+			return fmt.Errorf("failed to unmarshal response: %w", err)
+		}
+
+		if signRes.Code != 0 {
+			return errors.New(signRes.Message)
+		}
+		fmt.Printf("Approval ID %s signed successfully, result: %s\n", res.ApprovalId, signRes.Data)
+	}
+	return nil
+}
