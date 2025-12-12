@@ -2,20 +2,36 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
-	"openblock-approval-sdk/approval"
+	"strings"
 	"time"
+
+	"github.com/OpenBlockResource/openblock-approval-sdk-go/approval"
 )
 
 func main() {
 	// 定义命令行参数
 	configPath := flag.String("config", "config.json", "Path to the configuration file")
+	checkWallet := flag.String("check-wallet", "", "Check wallet information, e.g. -check-wallet=Solana,ETH ")
+	hdWalletId := flag.String("hd-wallet-id", "", "ID of the HD wallet")
 	flag.Parse()
 
 	// 从配置文件加载参数
 	wallet, err := approval.NewApprovalWalletFromJson(*configPath)
 	if err != nil {
 		log.Fatalf("Failed to load configuration from %s: %v", *configPath, err)
+	}
+	if *checkWallet != "" {
+		walletInfos, _ := wallet.Client.GetWalletInfo()
+		for _, walletInfo := range *walletInfos {
+			for chain, addr := range walletInfo.WalletAddressMap {
+				if strings.Contains(*checkWallet, chain) {
+					fmt.Printf("%s, %s, %s, %s\n", walletInfo.WalletName, walletInfo.WalletId, chain, addr)
+				}
+			}
+		}
+		return
 	}
 
 	for {
@@ -25,7 +41,7 @@ func main() {
 			if wallet.TxInfo.Msg != nil && wallet.TxInfo.Msg.SignMsg != "" {
 				action = "TRANSACTION_SIGNATURE"
 			}
-			res, err := wallet.SendApprovalTxInfo(wallet.TxInfo.Chain, action, wallet.TxInfo)
+			res, err := wallet.SendApprovalTxInfo(*hdWalletId, action, wallet.TxInfo)
 			if err != nil {
 				log.Fatalf("Approval fail: %v", err)
 			}

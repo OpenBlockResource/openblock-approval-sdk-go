@@ -24,8 +24,12 @@ func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
 		if !res.Approved {
 			continue
 		}
-
-		url := fmt.Sprintf("http://localhost:7790/openapi/sign/send_transaction?key=%s", client.ApiKey)
+		url := "http://localhost:7790/openapi/sign/%s?key=%s"
+		if res.Action == "TRANSACTION_SIGNATURE" {
+			url = fmt.Sprintf(url, "sign_message", client.ApiKey)
+		} else {
+			url = fmt.Sprintf(url, "send_transaction", client.ApiKey)
+		}
 		data := fmt.Sprintf(`{"company_wallet_approve_record_id": "%s"}`, res.ApprovalId)
 		resp, err := http.Post(url, "application/json", bytes.NewBufferString(data))
 		if err != nil {

@@ -36,8 +36,8 @@ func NewApprovalWallet(apiKey, apiSecret string) *ApprovalWallet {
     @txData: SOL base64交易
     返回值: txHash
 */
-func (w *ApprovalWallet) SendApprovalTransaction(chainName, txData string) (string, error) {
-	return SendApprovalTransaction(w.Client, chainName, txData)
+func (w *ApprovalWallet) SendApprovalTransaction(hdWalletId, chainName, txData string) (string, error) {
+	return SendApprovalTransaction(w.Client, hdWalletId, chainName, txData)
 }
 
 /*
@@ -46,8 +46,8 @@ func (w *ApprovalWallet) SendApprovalTransaction(chainName, txData string) (stri
     @txInfo: 参考ob api接口
     返回值: txHash/签名
 */
-func (w *ApprovalWallet) SendApprovalTxInfo(chainName, action string, txInfo *apisdk.TXInfo) (string, error) {
-	return SendApprovalTxInfo(w.Client, chainName, action, txInfo)
+func (w *ApprovalWallet) SendApprovalTxInfo(hdWalletId, action string, txInfo *apisdk.TXInfo) (string, error) {
+	return SendApprovalTxInfo(w.Client, hdWalletId, action, txInfo)
 }
 
 /*
@@ -56,8 +56,8 @@ func (w *ApprovalWallet) SendApprovalTxInfo(chainName, action string, txInfo *ap
     @message: SOL hex格式消息
     返回值: 签名
 */
-func (w *ApprovalWallet) SignApprovalMessage(chainName, message string) (string, error) {
-	return SignApprovalMessage(w.Client, chainName, message)
+func (w *ApprovalWallet) SignApprovalMessage(hdWalletId, chainName, message string) (string, error) {
+	return SignApprovalMessage(w.Client, hdWalletId, chainName, message)
 }
 
 /*

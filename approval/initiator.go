@@ -2,6 +2,7 @@ package approval
 
 import (
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 
 const SOLANA = "Solana"
 
-func SendApprovalTransaction(client *Client, chainName, txData string) (string, error) {
+func SendApprovalTransaction(client *Client, hdWalletId, chainName, txData string) (string, error) {
 	var txInfo *apisdk.TXInfo
 	switch chainName {
 	case SOLANA:
@@ -42,16 +43,19 @@ func SendApprovalTransaction(client *Client, chainName, txData string) (string, 
 		return "", fmt.Errorf("not supported")
 	}
 
-	return SendApprovalTxInfo(client, chainName, "TRANSACTION", txInfo)
+	return SendApprovalTxInfo(client, hdWalletId, "TRANSACTION", txInfo)
 }
 
-func SignApprovalMessage(client *Client, chainName, message string) (string, error) {
+func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) (string, error) {
 	var txInfo *apisdk.TXInfo
 	switch chainName {
 	case SOLANA:
+		m, _ := hex.DecodeString(message)
+
 		txInfo = &apisdk.TXInfo{
 			Msg: &apisdk.Msg{
 				SignMsg: message,
+				Message: string(m),
 			},
 		}
 
@@ -59,11 +63,11 @@ func SignApprovalMessage(client *Client, chainName, message string) (string, err
 		return "", fmt.Errorf("not supported")
 	}
 
-	return SendApprovalTxInfo(client, chainName, "TRANSACTION_SIGNATURE", txInfo)
+	return SendApprovalTxInfo(client, hdWalletId, "TRANSACTION_SIGNATURE", txInfo)
 }
 
-func SendApprovalTxInfo(client *Client, chainName, action string, txInfo *apisdk.TXInfo) (string, error) {
-	appr, err := client.NewApproval(action, txInfo, "")
+func SendApprovalTxInfo(client *Client, hdWalletId, action string, txInfo *apisdk.TXInfo) (string, error) {
+	appr, err := client.NewApproval(hdWalletId, action, txInfo, "")
 	if err != nil {
 		return "", err
 	}

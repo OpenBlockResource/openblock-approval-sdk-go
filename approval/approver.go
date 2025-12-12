@@ -2,7 +2,6 @@ package approval
 
 import (
 	"encoding/json"
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -24,6 +23,9 @@ type VerifyParams struct {
 type ApproveResults struct {
 	ApprovalId string
 	Approved   bool
+	Action     string
+	TxInfo     string
+	HdWalletID string
 }
 
 func AutoAprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveResults, error) {
@@ -42,34 +44,38 @@ func AutoAprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveResu
 		for _, params := range *approvalParams {
 			approveParams = &params
 			for _, param := range params.MatchParams {
-				if !checkParam(txInfoMap, param) {
+				if !CheckParam(txInfoMap, param) {
 					approveParams = nil
 					break
 				}
+			}
+			if approveParams != nil { //matched, break
+				break
 			}
 		}
 		if approveParams == nil {
 			continue
 		}
-		fmt.Println("=======matched: ", appr.RecordId)
 
 		agree := true
 		for _, param := range approveParams.VerifyParams {
-			if !checkParam(convertTxInfoToMap(appr.ExtraData.Txinfo), param) {
+			if !CheckParam(convertTxInfoToMap(appr.ExtraData.Txinfo), param) {
 				agree = false
 				break
 			}
 		}
-		fmt.Println("=======approval: ", appr.RecordId, agree)
 
 		res, err := client.AggreeApproval(appr.RecordId, agree)
 		if err != nil {
 			return nil, err
 		}
-
+		txInfo, _ := json.Marshal(appr.ExtraData.Txinfo)
 		approveResult = append(approveResult, ApproveResults{
-			ApprovalId: res.Data.OriginRecordId,
+			ApprovalId: res.Data.RecordId,
 			Approved:   agree,
+			Action:     appr.ActionType,
+			TxInfo:     string(txInfo),
+			HdWalletID: appr.HDWalletID,
 		})
 
 	}
@@ -77,7 +83,7 @@ func AutoAprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveResu
 }
 
 // 根据不同的Type和Rule检查参数
-func checkParam(txInfo map[string]interface{}, param VerifyParams) bool {
+func CheckParam(txInfo map[string]interface{}, param VerifyParams) bool {
 	actualValue := getValueByPath(txInfo, param.Path)
 	if actualValue == nil {
 		return false
@@ -177,7 +183,7 @@ func checkByRule(actualValue, expectedValue, rule string) bool {
 // decimal数值比较规则
 func checkDecimalRule(actualValue decimal.Decimal, expectedValue, rule string) bool {
 	expected, err := decimal.NewFromString(expectedValue)
-	if err != nil {
+	if err != nil && rule != "range" {
 		return false
 	}
 
