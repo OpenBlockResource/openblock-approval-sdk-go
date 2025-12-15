@@ -24,6 +24,25 @@ res, err := wallet.SignApprovalMessage(hdWalletId, "Solana", "abcdef1234567890")
 //发送交易
 res, err := wallet.SendApprovalTransaction(hdWalletId, "Solana", txData)
 ...
+
+//evm 交易
+txInfoJson := `{
+    "from":                 "from address",
+    "to":                   "to address",
+    "value":                "0.01",
+    "data":                 "0x...", //hex data
+    "chain":                "ETH",
+    "gasLimit":             "21000",
+    "gasPrice":             "1000000000", // 1 gwei
+    "nonce":                "0",
+    "eip1559": 				true, //true时手续费使用下面两个字段
+    "maxFeePerGas":         "5000000000", //5 gwei
+    "maxPriorityFeePerGas": "1000000000", // 1 gwei
+}`
+//chain: ETH, BSC, Polygon, Arbitrum, Optimism, Avalanche, Fantom
+wallet.SendApprovalTransaction(hdWalletId, "ETH", txInfoJson)
+...
+
 ```
 
 

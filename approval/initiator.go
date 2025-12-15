@@ -3,6 +3,7 @@ package approval
 import (
 	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -11,6 +12,13 @@ import (
 )
 
 const SOLANA = "Solana"
+const ETHEREUM = "ETH"
+const BSC = "BSC"
+const POLYGON = "Polygon"
+const ARBITRUM = "Arbitrum"
+const OPTIMISM = "Optimism"
+const AVALANCHE = "Avalanche"
+const FANTOM = "Fantom"
 
 func SendApprovalTransaction(client *Client, hdWalletId, chainName, txData string) (string, error) {
 	var txInfo *apisdk.TXInfo
@@ -39,9 +47,23 @@ func SendApprovalTransaction(client *Client, hdWalletId, chainName, txData strin
 			},
 		}
 
+	case ETHEREUM:
+	case POLYGON:
+	case ARBITRUM:
+	case OPTIMISM:
+	case AVALANCHE:
+	case FANTOM:
+	case BSC:
+		txInfo = &apisdk.TXInfo{}
+		if err := json.Unmarshal([]byte(txData), &txInfo); err != nil {
+			return "", fmt.Errorf("evm txData format error: %s", err)
+		}
+		txInfo.TransactionType = "native"
+
 	default:
 		return "", fmt.Errorf("not supported")
 	}
+	txInfo.Chain = chainName
 
 	return SendApprovalTxInfo(client, hdWalletId, "TRANSACTION", txInfo)
 }
