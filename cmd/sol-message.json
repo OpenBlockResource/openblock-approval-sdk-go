@@ -1,0 +1,13 @@
+{
+    "apiKey": "5837dc10b1714b3ca12dc0ab7d157550",
+    "apiSecret": "qeYeKq9TdLFuooC67ELIQNZ0ZwgGGDNN",
+    "role": "initiator",
+    "txInfo": {
+        "chain": "Solana",
+        "method": "solana_signMessage",
+        "msg": {
+            "signMsg": "7b226e6f6e6365223a223631313061393939636634323962303632343939383632633538363934613064222c2274696d657374616d70223a313736343735303235373335337d",
+            "Message": "{\"nonce\":\"6110a999cf429b062499862c58694a0d\",\"timestamp\":1764750257353}"
+        }
+    }
+}

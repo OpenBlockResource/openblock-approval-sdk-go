@@ -1,0 +1,79 @@
+{
+    "apiKey": "59783656062b41fdaf1d5ec4dc6aee25",
+    "apiSecret": "zh6GI3Ega2Lt6bTdIth61TEdpiEQdfHM",
+    "role": "manager",
+    "approvalParams": [
+        {
+            "matchParams": [
+                {
+                    "path": "chain",
+                    "value": "Solana",
+                    "rule": "exact"
+                },
+                {
+                    "path": "transaction_type",
+                    "value": "native",
+                    "rule": "exact"
+                }
+            ],
+            "verifyParams": [
+                {
+                    "path": "amount",
+                    "value": "10",
+                    "rule": "lt"
+                }
+            ]
+        },
+        {
+            "matchParams": [
+                {
+                    "path": "chain",
+                    "value": "Solana",
+                    "rule": "exact"
+                },
+                {
+                    "path": "method",
+                    "value": "solana_signMessage",
+                    "rule": "exact"
+                }
+            ],
+            "verifyParams": []
+        },
+        {
+            "matchParams": [
+                {
+                    "path": "chain",
+                    "value": "Polygon",
+                    "rule": "exact"
+                },
+                {
+                    "path": "transaction_type",
+                    "value": "native",
+                    "rule": "exact"
+                }
+            ],
+            "verifyParams": [
+                {
+                    "path": "amount",
+                    "value": "10",
+                    "rule": "lt"
+                }
+            ]
+        },
+        {
+            "matchParams": [
+                {
+                    "path": "chain",
+                    "value": "ETH",
+                    "rule": "exact"
+                },
+                {
+                    "path": "method",
+                    "value": "personal_sign",
+                    "rule": "exact"
+                }
+            ],
+            "verifyParams": []
+        }
+    ]
+}

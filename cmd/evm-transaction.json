@@ -1,0 +1,17 @@
+{
+    "apiKey": "5837dc10b1714b3ca12dc0ab7d157550",
+    "apiSecret": "qeYeKq9TdLFuooC67ELIQNZ0ZwgGGDNN",
+    "role": "initiator",
+    "txInfo": {
+        "chain": "Polygon",
+        "gasLimit": "21000",
+        "to": "0xc8F31688cc615aD31d2570db89B0Be10be2e44Fb",
+        "nonce": "3",
+        "gasPrice": "5000000000",
+        "value": "0.001",
+        "transaction_type": "native",
+        "from": "0x9Cc94A6D1aA0a18f1ad0909496EB1420f75e2697",
+        "maxFeePerGas": "50",
+        "maxPriorityFeePerGas": "25"
+    }
+}

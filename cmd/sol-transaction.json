@@ -1,0 +1,15 @@
+{
+    "apiKey": "5837dc10b1714b3ca12dc0ab7d157550",
+    "apiSecret": "qeYeKq9TdLFuooC67ELIQNZ0ZwgGGDNN",
+    "role": "initiator",
+    "txInfo": {
+        "chain": "Solana",
+        "recent_blockhash": "BeJys6AH8a7bkdZxrdeGPQatnZBrfgdBeoBNzg5MUkTb",
+        "from": "EiKYyxZRj3wwPdiH1NBwJvXPMyF95jBKSokyxL2ZLEU7",
+        "to": "4kaDvyMwuz8atonkKa5JizeFs2jU8ZBABuDxTLsfXgjC",
+        "value": "0.0001",
+        "transaction_type": "native",
+        "activeTokenEnum": 1,
+        "isNative": true
+    }
+}
