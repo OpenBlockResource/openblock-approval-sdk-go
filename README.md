@@ -5,8 +5,23 @@ OpenBlock Approval SDK 是一个用于处理企业钱包交易自动审批的 Go
 
 ## 编译运行、调用
 - 编译：go build cmd/runner.go
-- 脚本运行：./runner -config=config.json
-- 查看钱包ID和地址：./runner -check-wallet ETH,Solana
+- 脚本命令：
+```bash
+#Usage of ./runner:
+#  -check-wallet string
+#    	Check wallet information, e.g. -check-wallet=Solana,ETH
+#   -config string
+#     	Path to the configuration file (default "config.json")
+#   -hd-wallet-id string
+#     	ID of the HD wallet
+
+
+./runner -config cmd/manager.json #管理员持续审批
+./runner -config cmd/sol-transaction.json #发起sol交易
+./runner -config cmd/eth-transaction.json -hd-wallet-id 0ced4ad982e84efdb282bd16b913459a #发起子钱包ETH交易
+./runner -config cmd/evm-message.json #发起签名
+./runner -check-wallet ETH,Solana #查看钱包ID和地址
+```
 - sdk调用:
 ```go
 import "openblock-approval-sdk/approval"

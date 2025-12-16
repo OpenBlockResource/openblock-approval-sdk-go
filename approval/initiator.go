@@ -70,19 +70,22 @@ func SendApprovalTransaction(client *Client, hdWalletId, chainName, txData strin
 
 func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) (string, error) {
 	var txInfo *apisdk.TXInfo
+	hrMessage := message
 	switch chainName {
 	case SOLANA:
 		m, err := hex.DecodeString(message)
 		if err != nil {
 			return "", fmt.Errorf("invalid hex message: %s", err)
 		}
+		hrMessage = string(m)
 
 		txInfo = &apisdk.TXInfo{
 			Chain:  chainName,
 			Method: "solana_signMessage",
 			Msg: &apisdk.Msg{
-				SignMsg: message,
-				Message: string(m),
+				SignMsg:     message,
+				Message:     hrMessage,
+				OriginalMsg: message,
 			},
 		}
 
@@ -93,27 +96,25 @@ func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) 
 	case AVALANCHE:
 	case FANTOM:
 	case BSC:
-		method := ""
-		hrMessage := ""
+		method := "eth_signTypedData_v4"
 		if message[:2] == "0x" || !(message[0] == '{' || message[0] == '[') {
 			method = "personal_sign"
-			msg, err := hex.DecodeString(message)
-			if err != nil {
-				return "", fmt.Errorf("invalid hex message: %s", err)
+			if message[:2] == "0x" {
+				m, err := hex.DecodeString(message)
+				if err != nil {
+					return "", fmt.Errorf("invalid hex message: %s", err)
+				}
+				hrMessage = string(m)
 			}
-			hrMessage = string(msg)
-
-		} else {
-			method = "eth_signTypedData_v4"
-			hrMessage = message
 		}
 
 		txInfo = &apisdk.TXInfo{
 			Chain:  chainName,
 			Method: method,
 			Msg: &apisdk.Msg{
-				SignMsg: message,
-				Message: hrMessage,
+				SignMsg:     message,
+				Message:     hrMessage,
+				OriginalMsg: message,
 			},
 		}
 
