@@ -1,0 +1,14 @@
+{
+    "apiKey": "5837dc10b1714b3ca12dc0ab7d157550",
+    "apiSecret": "qeYeKq9TdLFuooC67ELIQNZ0ZwgGGDNN",
+    "role": "initiator",
+    "txInfo": {
+        "chain": "BenfenTEST",
+        "payload": {},
+        "from": "BFC0a70c36d84d355c535acf2113b0d7b8a290e3aaeb9a6e1067d252645abd3df3060f7",
+        "to": "0xbf4520f87852bf2994c3bbd426884079c7251d64a977dfea08096f1387edf096",
+        "data": "000002000800ca9a3b000000000020bf4520f87852bf2994c3bbd426884079c7251d64a977dfea08096f1387edf0960202000101000001010200000101000a70c36d84d355c535acf2113b0d7b8a290e3aaeb9a6e1067d252645abd3df300177fd272ac9e5ee522208d3cf2e7981d921e141a1b7c53b9a6adb6abfa4bf7fb8766453000000000020349666270d169beb2006ab88c3243a5d293858e8aa79aa8b59be4af9e10fddc60a70c36d84d355c535acf2113b0d7b8a290e3aaeb9a6e1067d252645abd3df30e803000000000000404b4c000000000000",
+        "transaction_type": "contract",
+        "bridgeMethod": "bfc_signTransaction"
+    }
+}

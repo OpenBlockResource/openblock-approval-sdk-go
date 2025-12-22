@@ -12,11 +12,11 @@ import (
 type SignResult struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
-	Data    string `json:"data"`
+	Data    any    `json:"data"`
 }
 
 func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
-	result, err := AutoAprove(client, approvalParams)
+	result, err := AutoApprove(client, approvalParams)
 	if err != nil {
 		return err
 	}
@@ -27,9 +27,12 @@ func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
 		url := "http://localhost:7790/openapi/sign/%s?key=%s"
 		if res.Action == "TRANSACTION_SIGNATURE" {
 			url = fmt.Sprintf(url, "sign_message", client.ApiKey)
+		} else if res.OnlySign {
+			url = fmt.Sprintf(url, "sign_transaction", client.ApiKey)
 		} else {
 			url = fmt.Sprintf(url, "send_transaction", client.ApiKey)
 		}
+
 		data := fmt.Sprintf(`{"company_wallet_approve_record_id": "%s"}`, res.ApprovalId)
 		resp, err := http.Post(url, "application/json", bytes.NewBufferString(data))
 		if err != nil {
@@ -51,7 +54,7 @@ func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
 		var signRes SignResult
 		err = json.Unmarshal(body, &signRes)
 		if err != nil {
-			return fmt.Errorf("failed to unmarshal response: %w", err)
+			return fmt.Errorf("failed to unmarshal response: %w, body: %s", err, string(body))
 		}
 
 		if signRes.Code != 0 {

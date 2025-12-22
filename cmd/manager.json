@@ -28,6 +28,21 @@
             "matchParams": [
                 {
                     "path": "chain",
+                    "value": "BenfenTEST",
+                    "rule": "exact"
+                },
+                {
+                    "path": "transaction_type",
+                    "value": "contract",
+                    "rule": "exact"
+                }
+            ],
+            "verifyParams": []
+        },
+        {
+            "matchParams": [
+                {
+                    "path": "chain",
                     "value": "Solana",
                     "rule": "exact"
                 },

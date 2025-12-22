@@ -56,12 +56,13 @@ func (c *Client) AggreeApproval(approvalId string, agree bool) (*apisdk.RespAgre
 	})
 }
 
-func (c *Client) NewApproval(hdWalletId, action string, txInfo *apisdk.TXInfo, note string) (*apisdk.RespNewApproval, error) {
+func (c *Client) NewApproval(hdWalletId, action string, txInfo *apisdk.TXInfo, note string, expiredSeconds int32) (*apisdk.RespNewApproval, error) {
 	return c.apiClient.CompanyWallet.NewApproval(&apisdk.ParamNewApproval{
-		HDWalletID: hdWalletId,
-		Action:     action,
-		TXInfo:     *txInfo,
-		Note:       note,
+		HDWalletID:     hdWalletId,
+		Action:         action,
+		TXInfo:         *txInfo,
+		Note:           note,
+		ExpiredTimeout: expiredSeconds,
 	})
 }
 

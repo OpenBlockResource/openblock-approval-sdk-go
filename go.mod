@@ -1,10 +1,14 @@
 module github.com/OpenBlockResource/openblock-approval-sdk-go
 
-go 1.21
+go 1.22
+
+toolchain go1.23.3
 
 require (
 	github.com/OpenBlockResource/openblock-api-sdk-go v0.0.4-0.20251204074117-d0e66c02021b
+	github.com/fardream/go-bcs v0.9.0
 	github.com/gagliardetto/solana-go v1.14.0
+	github.com/minio/blake2b-simd v0.0.0-20160723061019-3f5f724cb5b1
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.7.0
 )

@@ -38,6 +38,9 @@ res, err := wallet.SignApprovalMessage(hdWalletId, "Solana", "abcdef1234567890")
 
 //发送交易
 res, err := wallet.SendApprovalTransaction(hdWalletId, "Solana", txData)
+
+//只签名不发送交易
+res, err := wallet.SignApprovalTransaction(hdWalletId, "Solana", txData)
 ...
 
 //evm 交易
@@ -56,7 +59,8 @@ txInfoJson := `{
 }`
 //chain: ETH, BSC, Polygon, Arbitrum, Optimism, Avalanche, Fantom
 wallet.SendApprovalTransaction(hdWalletId, "ETH", txInfoJson)
-...
+
+//... 其他参考cmd下的交易模板
 
 ```
 
@@ -68,7 +72,8 @@ wallet.SendApprovalTransaction(hdWalletId, "ETH", txInfoJson)
   - 自动查询审批列表，将MatchParams匹配到的审批，按照VerifyParams进行审批
 - manager：管理员
   - 自动查询审批列表，将MatchParams匹配到的审批，按照VerifyParams进行审批，并调用docker完成mpc签名
-  - docker部署： https://docs.openblock.com/zh-Hans/OpenBlock/API/Enterprise%20Wallet/#docker-api
+  - docker部署：
+    - https://docs.openblock.com/zh-Hans/OpenBlock/API/Enterprise%20Wallet/#docker-api
 - 可以和openblock端上交叉使用，如：web端人工发起，脚本自动审批，或者脚本发起，web端人工审批
 
 

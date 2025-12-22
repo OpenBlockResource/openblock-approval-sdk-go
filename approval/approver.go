@@ -26,9 +26,10 @@ type ApproveResults struct {
 	Action     string
 	TxInfo     string
 	HdWalletID string
+	OnlySign   bool
 }
 
-func AutoAprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveResults, error) {
+func AutoApprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveResults, error) {
 	apprs, err := client.GetApprovals("ING")
 	if err != nil {
 		return nil, err
@@ -76,6 +77,7 @@ func AutoAprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveResu
 			Action:     appr.ActionType,
 			TxInfo:     string(txInfo),
 			HdWalletID: appr.HDWalletID,
+			OnlySign:   strings.HasSuffix(appr.ExtraData.Txinfo.BridgeMethod, "_signTransaction"),
 		})
 
 	}

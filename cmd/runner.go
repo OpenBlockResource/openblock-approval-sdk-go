@@ -37,11 +37,7 @@ func main() {
 	for {
 		switch wallet.Role {
 		case "initiator":
-			action := "TRANSACTION"
-			if wallet.TxInfo.Msg != nil && wallet.TxInfo.Msg.SignMsg != "" {
-				action = "TRANSACTION_SIGNATURE"
-			}
-			res, err := wallet.SendApprovalTxInfo(*hdWalletId, action, wallet.TxInfo)
+			res, err := wallet.SendApprovalTxInfo(*hdWalletId, wallet.TxInfo)
 			if err != nil {
 				log.Fatalf("Approval fail: %v", err)
 			}

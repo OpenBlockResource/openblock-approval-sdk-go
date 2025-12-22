@@ -32,7 +32,7 @@ func NewApprovalWallet(apiKey, apiSecret string) *ApprovalWallet {
 
 /*
   - 发送审批交易
-    @chainName: Solana/ETH
+    @chainName: Solana/ETH/Benfen
     @txData: SOL base64交易
     返回值: txHash
 */
@@ -41,13 +41,23 @@ func (w *ApprovalWallet) SendApprovalTransaction(hdWalletId, chainName, txData s
 }
 
 /*
+  - 只签名不发送审批交易
+    @chainName: Solana/ETH/Benfen
+    @txData: SOL base64交易
+    返回值: txHash
+*/
+func (w *ApprovalWallet) SignApprovalTransaction(hdWalletId, chainName, txData string) (string, error) {
+	return SignApprovalTransaction(w.Client, hdWalletId, chainName, txData)
+}
+
+/*
   - 签名审批交易/消息签名
     @chainName: Solana/ETH
     @txInfo: 参考ob api接口
     返回值: txHash/签名
 */
-func (w *ApprovalWallet) SendApprovalTxInfo(hdWalletId, action string, txInfo *apisdk.TXInfo) (string, error) {
-	return SendApprovalTxInfo(w.Client, hdWalletId, action, txInfo)
+func (w *ApprovalWallet) SendApprovalTxInfo(hdWalletId string, txInfo *apisdk.TXInfo) (string, error) {
+	return SendApprovalTxInfo(w.Client, hdWalletId, txInfo)
 }
 
 /*
@@ -64,7 +74,7 @@ func (w *ApprovalWallet) SignApprovalMessage(hdWalletId, chainName, message stri
 - 自动审批交易
 */
 func (w *ApprovalWallet) AutoApprove() error {
-	_, err := AutoAprove(w.Client, &w.ApprovalParams)
+	_, err := AutoApprove(w.Client, &w.ApprovalParams)
 	return err
 }
 
