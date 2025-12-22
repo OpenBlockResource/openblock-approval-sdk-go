@@ -52,7 +52,7 @@ func (w *ApprovalWallet) SignApprovalTransaction(hdWalletId, chainName, txData s
 
 /*
   - 签名审批交易/消息签名
-    @chainName: Solana/ETH
+    @chainName: Solana/ETH/Benfen
     @txInfo: 参考ob api接口
     返回值: txHash/签名
 */
@@ -62,7 +62,7 @@ func (w *ApprovalWallet) SendApprovalTxInfo(hdWalletId string, txInfo *apisdk.TX
 
 /*
   - 发送审批消息签名
-    @chainName: Solana/ETH
+    @chainName: Solana/ETH/Benfen
     @message: SOL hex格式消息
     返回值: 签名
 */

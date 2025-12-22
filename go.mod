@@ -2,10 +2,8 @@ module github.com/OpenBlockResource/openblock-approval-sdk-go
 
 go 1.22
 
-toolchain go1.23.3
-
 require (
-	github.com/OpenBlockResource/openblock-api-sdk-go v0.0.4-0.20251204074117-d0e66c02021b
+	github.com/OpenBlockResource/openblock-api-sdk-go v0.0.4
 	github.com/fardream/go-bcs v0.9.0
 	github.com/gagliardetto/solana-go v1.14.0
 	github.com/minio/blake2b-simd v0.0.0-20160723061019-3f5f724cb5b1
@@ -42,5 +40,3 @@ require (
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/OpenBlockResource/openblock-api-sdk-go => ../openblock-api-sdk-go

@@ -1,5 +1,7 @@
 filippo.io/edwards25519 v1.0.0-rc.1 h1:m0VOOB23frXZvAOK44usCgLWvtsxIoMCTBGJZlpmGfU=
 filippo.io/edwards25519 v1.0.0-rc.1/go.mod h1:N1IkdkCkiLB6tki+MYJoSx2JTY9NUlxZE7eHn5EwJns=
+github.com/OpenBlockResource/openblock-api-sdk-go v0.0.4 h1:6vyiQGzjJ5wCvyVzQvkOgxxT+oFa9VNLbs60AEVu0Ws=
+github.com/OpenBlockResource/openblock-api-sdk-go v0.0.4/go.mod h1:lje7u+5+DNRoEs27a+k69N+QchYShE9gl7GkWB9auTI=
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
 github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
 github.com/blendle/zapdriver v1.3.1 h1:C3dydBOWYRiOk+B8X9IVZ5IOe+7cl+tGOexN4QqHfpE=
