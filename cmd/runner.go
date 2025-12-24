@@ -23,7 +23,11 @@ func main() {
 		log.Fatalf("Failed to load configuration from %s: %v", *configPath, err)
 	}
 	if *checkWallet != "" {
-		walletInfos, _ := wallet.Client.GetWalletInfo()
+		walletInfos, err := wallet.Client.GetWalletInfo()
+		if err != nil {
+			log.Fatalf("Failed to get wallet info: %v", err)
+			return
+		}
 		for _, walletInfo := range *walletInfos {
 			for chain, addr := range walletInfo.WalletAddressMap {
 				if strings.Contains(*checkWallet, chain) {

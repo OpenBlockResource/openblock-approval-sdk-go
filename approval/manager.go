@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"log"
 )
 
 type SignResult struct {
@@ -34,6 +36,8 @@ func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
 		}
 
 		data := fmt.Sprintf(`{"company_wallet_approve_record_id": "%s"}`, res.ApprovalId)
+		log.Printf("call docker request: %s, %s\n", url, data)
+
 		resp, err := http.Post(url, "application/json", bytes.NewBufferString(data))
 		if err != nil {
 			return fmt.Errorf("failed to send sign request: %w", err)
@@ -60,7 +64,7 @@ func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
 		if signRes.Code != 0 {
 			return errors.New(signRes.Message)
 		}
-		fmt.Printf("Approval ID %s signed successfully, result: %s\n", res.ApprovalId, signRes.Data)
+		log.Printf("Approval ID %s signed successfully, result: %s\n", res.ApprovalId, signRes.Data)
 	}
 	return nil
 }

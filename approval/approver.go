@@ -2,6 +2,7 @@ package approval
 
 import (
 	"encoding/json"
+	"log"
 	"regexp"
 	"strconv"
 	"strings"
@@ -79,6 +80,7 @@ func AutoApprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveRes
 			HdWalletID: appr.HDWalletID,
 			OnlySign:   strings.HasSuffix(appr.ExtraData.Txinfo.BridgeMethod, "_signTransaction"),
 		})
+		log.Printf("auto approve, recordId: %s, agree: %v, txInfo: %s\n", appr.RecordId, agree, string(txInfo))
 
 	}
 	return approveResult, nil

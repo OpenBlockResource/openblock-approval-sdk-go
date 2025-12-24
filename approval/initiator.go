@@ -71,13 +71,7 @@ func BuildTxInfo(chainName, txData string, needSend bool) (*apisdk.TXInfo, error
 			txInfo.BridgeMethod = "solana_signTransaction"
 		}
 
-	case ETHEREUM:
-	case POLYGON:
-	case ARBITRUM:
-	case OPTIMISM:
-	case AVALANCHE:
-	case FANTOM:
-	case BSC:
+	case ETHEREUM, POLYGON, ARBITRUM, OPTIMISM, AVALANCHE, FANTOM, BSC:
 		txInfo = &apisdk.TXInfo{}
 		if err := json.Unmarshal([]byte(txData), &txInfo); err != nil {
 			return nil, fmt.Errorf("evm txData format error: %s", err)
@@ -87,8 +81,7 @@ func BuildTxInfo(chainName, txData string, needSend bool) (*apisdk.TXInfo, error
 			txInfo.BridgeMethod = "eth_signTransaction"
 		}
 
-	case BENFEN:
-	case BENFEN_TESTNET:
+	case BENFEN, BENFEN_TESTNET:
 		txInfo = &apisdk.TXInfo{
 			Data:            txData,
 			Payload:         map[string]string{},
@@ -128,13 +121,7 @@ func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) 
 			},
 		}
 
-	case ETHEREUM:
-	case POLYGON:
-	case ARBITRUM:
-	case OPTIMISM:
-	case AVALANCHE:
-	case FANTOM:
-	case BSC:
+	case ETHEREUM, POLYGON, ARBITRUM, OPTIMISM, AVALANCHE, FANTOM, BSC:
 		method := "eth_signTypedData_v4"
 		if message[:2] == "0x" || !(message[0] == '{' || message[0] == '[') {
 			method = "personal_sign"
@@ -157,8 +144,7 @@ func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) 
 			},
 		}
 
-	case BENFEN:
-	case BENFEN_TESTNET:
+	case BENFEN, BENFEN_TESTNET:
 		s1, err := hex.DecodeString(message)
 		if err != nil {
 			return "", fmt.Errorf("invalid hex message: %s", err)
@@ -242,8 +228,7 @@ func SendApprovalTxInfo(client *Client, hdWalletId string, txInfo *apisdk.TXInfo
 					}
 
 					switch txInfo.Chain {
-					case BENFEN:
-					case BENFEN_TESTNET:
+					case BENFEN, BENFEN_TESTNET:
 						var suiTxData []any
 						json.Unmarshal([]byte(rawTx), &suiTxData)
 						if suiTxData == nil || len(suiTxData) != 4 {
