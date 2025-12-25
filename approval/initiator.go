@@ -160,7 +160,7 @@ func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) 
 			Chain:  chainName,
 			Method: method,
 			Msg: &apisdk.Msg{
-				SignMsg:     signMsg,
+				SignMsg:     "0x" + signMsg,
 				Message:     hrMessage,
 				OriginalMsg: message,
 			},
