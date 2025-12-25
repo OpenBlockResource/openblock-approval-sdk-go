@@ -66,6 +66,8 @@ func BuildTxInfo(chainName, txData string, needSend bool) (*apisdk.TXInfo, error
 			TxPayload: []any{
 				txInput,
 			},
+			TransactionType: "contract",
+			ActiveTokenEnum: 1,
 		}
 		if needSend {
 			txInfo.BridgeMethod = "solana_signTransaction"
