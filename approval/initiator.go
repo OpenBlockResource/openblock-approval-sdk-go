@@ -26,7 +26,7 @@ const BENFEN = "Benfen"
 const BENFEN_TESTNET = "BenfenTEST"
 
 func SendApprovalTransaction(client *Client, hdWalletId, chainName, txData string) (string, error) {
-	txInfo, err := BuildTxInfo(chainName, txData, true)
+	txInfo, err := BuildTxInfo(chainName, txData, false)
 	if err != nil {
 		return "", err
 	}
@@ -34,7 +34,7 @@ func SendApprovalTransaction(client *Client, hdWalletId, chainName, txData strin
 }
 
 func SignApprovalTransaction(client *Client, hdWalletId, chainName, txData string) (string, error) {
-	txInfo, err := BuildTxInfo(chainName, txData, false)
+	txInfo, err := BuildTxInfo(chainName, txData, true)
 	if err != nil {
 		return "", err
 	}
