@@ -1,6 +1,8 @@
 package approval
 
 import (
+	"encoding/json"
+	"log"
 	"time"
 
 	apisdk "github.com/OpenBlockResource/openblock-api-sdk-go"
@@ -57,6 +59,8 @@ func (c *Client) AggreeApproval(approvalId string, agree bool) (*apisdk.RespAgre
 }
 
 func (c *Client) NewApproval(hdWalletId, action string, txInfo *apisdk.TXInfo, note string, expiredSeconds int32) (*apisdk.RespNewApproval, error) {
+	txInfoJson, _ := json.Marshal(txInfo)
+	log.Printf("NewApproval, hdWalletId: %s, action: %s, txInfo: %s, expiredSec: %d", hdWalletId, action, string(txInfoJson), expiredSeconds)
 	return c.apiClient.CompanyWallet.NewApproval(&apisdk.ParamNewApproval{
 		HDWalletID:     hdWalletId,
 		Action:         action,

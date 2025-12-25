@@ -35,6 +35,8 @@ func AutoApprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveRes
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("Got %d approvals", len(apprs.Data))
+
 	var approveResult []ApproveResults
 	for _, appr := range apprs.Data {
 		if appr.Status != "ING" {
@@ -55,7 +57,9 @@ func AutoApprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveRes
 				break
 			}
 		}
+		txInfo, _ := json.Marshal(appr.ExtraData.Txinfo)
 		if approveParams == nil {
+			log.Printf("No matched, skip approve, recordId: %s, txInfo %s\n", appr.RecordId, string(txInfo))
 			continue
 		}
 
@@ -71,7 +75,6 @@ func AutoApprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveRes
 		if err != nil {
 			return nil, err
 		}
-		txInfo, _ := json.Marshal(appr.ExtraData.Txinfo)
 		approveResult = append(approveResult, ApproveResults{
 			ApprovalId: res.Data.RecordId,
 			Approved:   agree,
