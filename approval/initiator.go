@@ -69,7 +69,7 @@ func BuildTxInfo(chainName, txData string, onlySign bool) (*apisdk.TXInfo, error
 			TxPayload: []any{
 				txInput,
 			},
-			TransactionType: "contract",
+			TransactionType: "native",
 			ActiveTokenEnum: 1,
 			From:            accountKeys[0],
 			To:              accountKeys[1],
