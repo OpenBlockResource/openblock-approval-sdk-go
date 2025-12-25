@@ -195,7 +195,7 @@ func SendApprovalTxInfo(client *Client, hdWalletId string, txInfo *apisdk.TXInfo
 	}
 	recordId := appr.Data.OriginRecordId
 
-	for i := 0; i < 15; i++ {
+	for i := 0; i < 30; i++ {
 		apprs, err := client.GetSponsoredApprovals(recordId)
 		if err != nil {
 			return "", fmt.Errorf("GetSponsoredApprovals error: %v", err)
@@ -252,7 +252,7 @@ func SendApprovalTxInfo(client *Client, hdWalletId string, txInfo *apisdk.TXInfo
 			}
 		}
 
-		time.Sleep(2 * time.Second)
+		time.Sleep(3 * time.Second)
 	}
 	return "", fmt.Errorf("approve timeout")
 }
