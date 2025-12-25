@@ -17,7 +17,7 @@ type SignResult struct {
 	Data    any    `json:"data"`
 }
 
-func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
+func AutoSign(client *Client, approvalParams *[]ApprovalParams, dockerPort string) error {
 	result, err := AutoApprove(client, approvalParams)
 	if err != nil {
 		return err
@@ -26,13 +26,13 @@ func AutoSign(client *Client, approvalParams *[]ApprovalParams) error {
 		if !res.Approved {
 			continue
 		}
-		url := "http://localhost:7790/openapi/sign/%s?key=%s"
+		url := "http://localhost:%s/openapi/sign/%s?key=%s"
 		if res.Action == "TRANSACTION_SIGNATURE" {
-			url = fmt.Sprintf(url, "sign_message", client.ApiKey)
+			url = fmt.Sprintf(url, dockerPort, "sign_message", client.ApiKey)
 		} else if res.OnlySign {
-			url = fmt.Sprintf(url, "sign_transaction", client.ApiKey)
+			url = fmt.Sprintf(url, dockerPort, "sign_transaction", client.ApiKey)
 		} else {
-			url = fmt.Sprintf(url, "send_transaction", client.ApiKey)
+			url = fmt.Sprintf(url, dockerPort, "send_transaction", client.ApiKey)
 		}
 
 		data := fmt.Sprintf(`{"company_wallet_approve_record_id": "%s"}`, res.ApprovalId)

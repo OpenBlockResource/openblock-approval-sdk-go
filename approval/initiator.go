@@ -9,6 +9,8 @@ import (
 	"time"
 
 	apisdk "github.com/OpenBlockResource/openblock-api-sdk-go"
+	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 	"github.com/fardream/go-bcs/bcs"
 	solana "github.com/gagliardetto/solana-go"
 	"github.com/minio/blake2b-simd"
@@ -128,6 +130,7 @@ func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) 
 
 	case ETHEREUM, POLYGON, ARBITRUM, OPTIMISM, AVALANCHE, FANTOM, BSC:
 		method := "eth_signTypedData_v4"
+		signMsg := ""
 		if message[:2] == "0x" || !(message[0] == '{' || message[0] == '[') {
 			method = "personal_sign"
 			if message[:2] == "0x" {
@@ -136,14 +139,28 @@ func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) 
 					return "", fmt.Errorf("invalid hex message: %s", err)
 				}
 				hrMessage = string(m)
+				signMsg = hex.EncodeToString(accounts.TextHash(m))
+			} else {
+				signMsg = hex.EncodeToString(accounts.TextHash([]byte(message)))
 			}
+
+		} else {
+			var td apitypes.TypedData
+			if err := json.Unmarshal([]byte(message), &td); err != nil {
+				return "", fmt.Errorf("invalid typed message: %s", err)
+			}
+			hash, _, err := apitypes.TypedDataAndHash(td)
+			if err != nil {
+				return "", fmt.Errorf("failed to get typed data hash: %s", err)
+			}
+			signMsg = hex.EncodeToString(hash)
 		}
 
 		txInfo = &apisdk.TXInfo{
 			Chain:  chainName,
 			Method: method,
 			Msg: &apisdk.Msg{
-				SignMsg:     message,
+				SignMsg:     signMsg,
 				Message:     hrMessage,
 				OriginalMsg: message,
 			},

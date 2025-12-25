@@ -11,6 +11,7 @@ type ApprovalWallet struct {
 	Role           string
 	ApiKey         string
 	ApiSecret      string
+	DockerPort     string
 	ApprovalParams []ApprovalParams
 	TxInfo         *apisdk.TXInfo
 	Client         *Client
@@ -83,7 +84,7 @@ func (w *ApprovalWallet) AutoApprove() error {
     返回值: txHash
 */
 func (w *ApprovalWallet) AutoSign() error {
-	return AutoSign(w.Client, &w.ApprovalParams)
+	return AutoSign(w.Client, &w.ApprovalParams, w.DockerPort)
 }
 
 func NewApprovalWalletFromJson(filePath string) (*ApprovalWallet, error) {
@@ -98,6 +99,9 @@ func NewApprovalWalletFromJson(filePath string) (*ApprovalWallet, error) {
 		return nil, err
 	}
 	w.Client = NewClient(w.ApiKey, w.ApiSecret)
+	if w.DockerPort == "" {
+		w.DockerPort = "7790"
+	}
 
 	return &w, nil
 }

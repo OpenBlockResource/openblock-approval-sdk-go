@@ -43,24 +43,23 @@ func main() {
 		case "initiator":
 			res, err := wallet.SendApprovalTxInfo(*hdWalletId, wallet.TxInfo)
 			if err != nil {
-				log.Fatalf("Approval fail: %v", err)
+				log.Printf("Approval fail: %v", err)
 			}
 			log.Printf("Approval response: %s", res)
 			return
 
 		case "approver":
 			if err := wallet.AutoApprove(); err != nil {
-				log.Fatalf("Auto approval failed: %v", err)
+				log.Printf("Auto approval failed: %v", err)
 			}
 
 		case "manager":
 			if err := wallet.AutoSign(); err != nil {
-				log.Fatalf("Auto sign failed: %v", err)
+				log.Printf("Auto sign failed: %v", err)
 			}
 
 		default:
 			log.Fatalf("Unknown role: %s", wallet.Role)
-			return
 		}
 
 		time.Sleep(5 * time.Second)
