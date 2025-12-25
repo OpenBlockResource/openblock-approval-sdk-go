@@ -49,6 +49,7 @@ func BuildTxInfo(chainName, txData string, onlySign bool) (*apisdk.TXInfo, error
 		if err != nil {
 			return nil, err
 		}
+		accountKeys := transaction.Message.AccountKeys.ToBase58()
 		txInput := map[string]any{
 			"recent_blockhash": transaction.Message.RecentBlockhash.String(),
 			"header": map[string]any{
@@ -56,7 +57,7 @@ func BuildTxInfo(chainName, txData string, onlySign bool) (*apisdk.TXInfo, error
 				"numReadonlyUnsignedAccounts": transaction.Message.Header.NumReadonlyUnsignedAccounts,
 				"numRequiredSignatures":       transaction.Message.Header.NumRequiredSignatures,
 			},
-			"staticAccountKeys":    transaction.Message.AccountKeys.ToBase58(),
+			"staticAccountKeys":    accountKeys,
 			"compiledInstructions": ConvertCompiledInstructions(transaction.Message.Instructions),
 			"addressTableLookups":  transaction.Message.AddressTableLookups,
 		}
@@ -68,6 +69,8 @@ func BuildTxInfo(chainName, txData string, onlySign bool) (*apisdk.TXInfo, error
 			},
 			TransactionType: "contract",
 			ActiveTokenEnum: 1,
+			From:            accountKeys[0],
+			To:              accountKeys[1],
 		}
 		if onlySign {
 			txInfo.BridgeMethod = "solana_signTransaction"
