@@ -41,7 +41,7 @@ func SignApprovalTransaction(client *Client, hdWalletId, chainName, txData strin
 	return SendApprovalTxInfo(client, hdWalletId, txInfo)
 }
 
-func BuildTxInfo(chainName, txData string, needSend bool) (*apisdk.TXInfo, error) {
+func BuildTxInfo(chainName, txData string, onlySign bool) (*apisdk.TXInfo, error) {
 	var txInfo *apisdk.TXInfo
 	switch chainName {
 	case SOLANA:
@@ -69,7 +69,7 @@ func BuildTxInfo(chainName, txData string, needSend bool) (*apisdk.TXInfo, error
 			TransactionType: "contract",
 			ActiveTokenEnum: 1,
 		}
-		if needSend {
+		if onlySign {
 			txInfo.BridgeMethod = "solana_signTransaction"
 		}
 
@@ -79,7 +79,7 @@ func BuildTxInfo(chainName, txData string, needSend bool) (*apisdk.TXInfo, error
 			return nil, fmt.Errorf("evm txData format error: %s", err)
 		}
 		txInfo.TransactionType = "native"
-		if needSend {
+		if onlySign {
 			txInfo.BridgeMethod = "eth_signTransaction"
 		}
 
@@ -89,7 +89,7 @@ func BuildTxInfo(chainName, txData string, needSend bool) (*apisdk.TXInfo, error
 			Payload:         map[string]string{},
 			TransactionType: "native",
 		}
-		if needSend {
+		if onlySign {
 			txInfo.BridgeMethod = "bfc_signTransaction"
 		}
 
