@@ -214,9 +214,15 @@ func SendApprovalTxInfo(client *Client, hdWalletId string, txInfo *apisdk.TXInfo
 		action = "TRANSACTION_SIGNATURE"
 	}
 
+	walletInfo, err := client.GetHDWalletInfo(hdWalletId)
+	if err != nil {
+		return "", fmt.Errorf("GetHDWalletInfo error: %v", err)
+	}
+	txInfo.From = walletInfo.WalletAddressMap[txInfo.Chain]
+
 	appr, err := client.NewApproval(hdWalletId, action, txInfo, "", expiredSeconds)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("NewApproval error: %v", err)
 	}
 	recordId := appr.Data.OriginRecordId
 
