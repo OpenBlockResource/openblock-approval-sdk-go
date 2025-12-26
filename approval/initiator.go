@@ -73,6 +73,7 @@ func BuildTxInfo(chainName, txData string, onlySign bool) (*apisdk.TXInfo, error
 			ActiveTokenEnum: 1,
 			From:            accountKeys[0],
 			To:              accountKeys[1],
+			Value:           "0",
 		}
 		if onlySign {
 			txInfo.BridgeMethod = "solana_signTransaction"
