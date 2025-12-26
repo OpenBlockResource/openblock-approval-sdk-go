@@ -10,6 +10,7 @@ import (
 
 	apisdk "github.com/OpenBlockResource/openblock-api-sdk-go"
 	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 	"github.com/fardream/go-bcs/bcs"
 	solana "github.com/gagliardetto/solana-go"
@@ -150,7 +151,7 @@ func SignApprovalMessage(client *Client, hdWalletId, chainName, message string) 
 			if err := json.Unmarshal([]byte(message), &td); err != nil {
 				return "", fmt.Errorf("invalid typed message: %s", err)
 			}
-			hash, _, err := apitypes.TypedDataAndHash(td)
+			hash, _, err := TypedDataAndHash(td)
 			if err != nil {
 				return "", fmt.Errorf("failed to get typed data hash: %s", err)
 			}
@@ -289,4 +290,21 @@ func ConvertCompiledInstructions(instructions []solana.CompiledInstruction) []ma
 		convertedInstructions = append(convertedInstructions, convertedInstruction)
 	}
 	return convertedInstructions
+}
+
+func TypedDataAndHash(typedData apitypes.TypedData) ([]byte, string, error) {
+	domainMap := typedData.Domain.Map()
+	if typedData.Domain.Name == "" { //支持空name
+		domainMap["name"] = typedData.Domain.Name
+	}
+	domainSeparator, err := typedData.HashStruct("EIP712Domain", domainMap)
+	if err != nil {
+		return nil, "", err
+	}
+	typedDataHash, err := typedData.HashStruct(typedData.PrimaryType, typedData.Message)
+	if err != nil {
+		return nil, "", err
+	}
+	rawData := fmt.Sprintf("\x19\x01%s%s", string(domainSeparator), string(typedDataHash))
+	return crypto.Keccak256([]byte(rawData)), rawData, nil
 }
