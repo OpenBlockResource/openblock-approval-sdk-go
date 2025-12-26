@@ -95,6 +95,9 @@ func BuildTxInfo(chainName, txData string, onlySign bool) (*apisdk.TXInfo, error
 			Data:            txData,
 			Payload:         map[string]string{},
 			TransactionType: "native",
+			From:            "0x0000000000000000000000000000000000000000000000000000000000000000",
+			To:              "0x0000000000000000000000000000000000000000000000000000000000000000",
+			Value:           "0",
 		}
 		if onlySign {
 			txInfo.BridgeMethod = "bfc_signTransaction"

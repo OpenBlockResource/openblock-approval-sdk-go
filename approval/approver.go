@@ -65,7 +65,7 @@ func AutoApprove(client *Client, approvalParams *[]ApprovalParams) ([]ApproveRes
 
 		agree := true
 		for _, param := range approveParams.VerifyParams {
-			if !CheckParam(convertTxInfoToMap(appr.ExtraData.Txinfo), param) {
+			if !CheckParam(txInfoMap, param) {
 				agree = false
 				break
 			}
