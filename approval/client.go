@@ -75,7 +75,7 @@ func (c *Client) NewApproval(hdWalletId, action string, txInfo *apisdk.TXInfo, n
 
 func (c *Client) GetWalletInfo() (*[]*WalletInfo, error) {
 	var walletInfos []*WalletInfo
-	mainWalletInfo, err := c.GetHDWalletInfo("-")
+	mainWalletInfo, err := c.GetHDWalletInfo("")
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (c *Client) GetHDWalletInfo(hdWalletId string) (*WalletInfo, error) {
 		WalletAddressMap: map[string]string{},
 		WalletId:         hdWalletId,
 	}
-	if hdWalletId == "-" {
+	if hdWalletId == "" {
 		walletInfo.IsHDWallet = false
 		resp, err := c.apiClient.CompanyWallet.GetCompanyWalletInfo()
 		if err != nil {

@@ -16,24 +16,18 @@
                     "rule": "exact"
                 }
             ],
-            "verifyParams": [
-                {
-                    "path": "amount",
-                    "value": "10",
-                    "rule": "lt"
-                }
-            ]
+            "verifyParams": []
         },
         {
             "matchParams": [
                 {
                     "path": "chain",
-                    "value": "BenfenTEST",
+                    "value": "Benfen",
                     "rule": "exact"
                 },
                 {
                     "path": "transaction_type",
-                    "value": "contract",
+                    "value": "native",
                     "rule": "exact"
                 }
             ],
@@ -58,7 +52,7 @@
             "matchParams": [
                 {
                     "path": "chain",
-                    "value": "Polygon",
+                    "value": "ETH",
                     "rule": "exact"
                 },
                 {
@@ -67,13 +61,7 @@
                     "rule": "exact"
                 }
             ],
-            "verifyParams": [
-                {
-                    "path": "amount",
-                    "value": "10",
-                    "rule": "lt"
-                }
-            ]
+            "verifyParams": []
         },
         {
             "matchParams": [
@@ -85,6 +73,21 @@
                 {
                     "path": "method",
                     "value": "personal_sign",
+                    "rule": "exact"
+                }
+            ],
+            "verifyParams": []
+        },
+        {
+            "matchParams": [
+                {
+                    "path": "chain",
+                    "value": "ETH",
+                    "rule": "exact"
+                },
+                {
+                    "path": "method",
+                    "value": "eth_signTypedData_v4",
                     "rule": "exact"
                 }
             ],
