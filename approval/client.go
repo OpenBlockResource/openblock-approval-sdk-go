@@ -2,7 +2,9 @@ package approval
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	apisdk "github.com/OpenBlockResource/openblock-api-sdk-go"
@@ -31,6 +33,22 @@ func NewClient(apiKey, apiSecret string) *Client {
 		apiClient:     client,
 		WalletInfoMap: make(map[string]*WalletInfo),
 	}
+}
+
+// SetAPIHost overrides the default API host when host is non-empty.
+func (c *Client) SetAPIHost(host string) error {
+	if c == nil || c.apiClient == nil || c.apiClient.CompanyWallet == nil {
+		return fmt.Errorf("approval API client is not initialized")
+	}
+	host = strings.TrimSpace(host)
+	if host == "" {
+		return nil
+	}
+	if strings.Contains(host, "://") || strings.ContainsAny(host, "/?#") {
+		return fmt.Errorf("approval API host must be a hostname without scheme or path")
+	}
+	c.apiClient.CompanyWallet.Host = host
+	return nil
 }
 
 func (c *Client) GetApprovals(status string) (*apisdk.RespApprovals, error) {
