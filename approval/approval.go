@@ -22,12 +22,12 @@ type ApprovalWallet struct {
     @apiKey: openblock api key
     @apiSecret: openblock api secret
 */
-func NewApprovalWallet(apiKey, apiSecret string) *ApprovalWallet {
+func NewApprovalWallet(apiKey, apiSecret string, hosts ...string) *ApprovalWallet {
 	return &ApprovalWallet{
 		ApiKey:         apiKey,
 		ApiSecret:      apiSecret,
 		ApprovalParams: []ApprovalParams{},
-		Client:         NewClient(apiKey, apiSecret),
+		Client:         NewClient(apiKey, apiSecret, hosts...),
 	}
 }
 

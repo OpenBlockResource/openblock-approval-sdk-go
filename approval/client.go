@@ -3,6 +3,7 @@ package approval
 import (
 	"encoding/json"
 	"log"
+	"strings"
 	"time"
 
 	apisdk "github.com/OpenBlockResource/openblock-api-sdk-go"
@@ -23,8 +24,11 @@ type WalletInfo struct {
 	HDWalletList     []*WalletInfo
 }
 
-func NewClient(apiKey, apiSecret string) *Client {
+func NewClient(apiKey, apiSecret string, hosts ...string) *Client {
 	client := apisdk.NewClient(apiKey, apiSecret, 10*time.Second)
+	if len(hosts) > 0 && strings.TrimSpace(hosts[0]) != "" {
+		client.CompanyWallet.Host = strings.TrimSpace(hosts[0])
+	}
 	return &Client{
 		ApiKey:        apiKey,
 		ApiSecret:     apiSecret,
