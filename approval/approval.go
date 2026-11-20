@@ -11,6 +11,7 @@ type ApprovalWallet struct {
 	Role           string
 	ApiKey         string
 	ApiSecret      string
+	APIHost        string `json:"apiHost,omitempty"`
 	DockerPort     string
 	ApprovalParams []ApprovalParams
 	TxInfo         *apisdk.TXInfo
@@ -98,7 +99,7 @@ func NewApprovalWalletFromJson(filePath string) (*ApprovalWallet, error) {
 	if err := json.Unmarshal(data, &w); err != nil {
 		return nil, err
 	}
-	w.Client = NewClient(w.ApiKey, w.ApiSecret)
+	w.Client = NewClient(w.ApiKey, w.ApiSecret, w.APIHost)
 	if w.DockerPort == "" {
 		w.DockerPort = "7790"
 	}
